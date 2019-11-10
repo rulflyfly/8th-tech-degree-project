@@ -1,0 +1,16 @@
+body {
+    padding-bottom: 1em;
+}
+
+.wrapper {
+    width: 95%;
+    margin: 0 auto;
+
+    @include mq($brk-m) {
+        max-width: 47em;
+    }
+
+    @include mq($brk-l) {
+        max-width: 71em;
+    }
+}

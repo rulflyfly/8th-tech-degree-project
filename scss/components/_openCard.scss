@@ -1,0 +1,59 @@
+.overlay, .open {
+    position: absolute;
+}
+
+.overlay {
+    z-index: 5;
+    height: 350%;
+    width: 100%;
+    top: 0;
+    background: rgba($black, .5);
+
+    @include mq($brk-m) {
+        height: 200%;
+    }
+   
+    @include mq($brk-l) {
+        height: 120%;
+    }
+
+}
+
+.open {
+    z-index: 10;
+    width: 19em;
+    left: calc(50% - 9.5em);
+    background: $white;
+    padding: 1em 2em 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: .5em;
+    text-align: center;
+
+    & img {
+       width: 7em;
+       height: 7em;
+       border-radius: 50%;
+    }
+
+    & .info {
+        margin-top: 1em;
+    }
+
+    & .line {
+        width: 100%;
+        height: 1px;
+        background: $grey;
+        margin: 1em 0 1.2em;
+    }
+
+    & p {
+        font-size: .9em;
+    }
+
+}
+
+.hide {
+    align-self: flex-end;
+}
