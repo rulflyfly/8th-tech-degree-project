@@ -1,3 +1,6 @@
+//the date returned from the api is formated YYYY/MM/DD
+//I needed MM/DD/YY that's what the next to functions about
+
 const swap = (arr) => {
     const holder = [];
     holder.push(arr[1]);
@@ -16,6 +19,8 @@ const formatState = (data) => {
     }, '')
 };
 
+//the date of birth returned from the api contained time of birth 
+//I removed it 
 
 const formatDate = (date) => {
     const dateArr = date.split('');
@@ -32,6 +37,8 @@ const formatDate = (date) => {
     const swapYear = deleteTail.join('').split('-');
     return swap(swapYear);
 };
+
+//here I'm getting all the information from the api and putting it inside different DOM elements
 
 const getInfo = (employees) => {
     employees.forEach((employee, index) => {
@@ -61,19 +68,23 @@ const getInfo = (employees) => {
      $('.card .more-info').css('display', 'none');
 };
 
-
+//here I accessed a result property of the fetched json
+//I need to return '.card' to chain the next then so that the passed to it function had '.card' as a parameter
 const getCards = (json) => {
       const employees = json.results;
       getInfo(employees);
       return '.card';
 };
 
+
+//scroll top returns a number which reprecents how many pixels was scrolled from the top
+//I need this to dynamically position opening cards
 const scroll = () => {
     var y = document.scrollingElement.scrollTop;
     return y;
 };
 
-
+//generating an opening card
 const openInfo = (clicked) => {
     const $card = $('<div class="open"></div>');
     const $overlay = $('<div class="overlay"></div>');
@@ -89,6 +100,9 @@ const openInfo = (clicked) => {
         $('.open').remove();
         $('.overlay').remove();
         $('body').css('overflow', 'unset');
+
+        $('.prev').css('display', 'none');
+        $('.next').css('display', 'none');
       })
 
     $('body').append($overlay, $card);
@@ -104,10 +118,10 @@ const openCard = (cards) => {
             $(e.target.parentNode.parentNode).addClass('clicked');
         }
         if ($(e.target.parentNode).hasClass('card')) {
-            $(e.target.parentNode).addClass('clicked')
+            $(e.target.parentNode).addClass('clicked');
         }
         if ($(e.target).hasClass('card')) {
-            $(e.target).addClass('clicked')
+            $(e.target).addClass('clicked');
         }
         
         //creating a new overlay div
@@ -119,15 +133,121 @@ const openCard = (cards) => {
         $('.open').css('top', offset + 100);
         $('body').css('overflow', 'hidden');
 
+        $('.prev').css('display', 'block');
+        $('.next').css('display', 'block');
 
+        $('.prev').css('top', offset + 500);
+        $('.prev').css('left', '40%');
+
+        $('.next').css('top', offset + 500);
+        $('.next').css('right', '40%');
     })
 };
 
+
+/*================================================
+===========ARROWS FUNCTIONALITY===================
+==================================================*/
+
+
+const $next = $('.next');
+const $prev = $('.prev');
+
+$next.on('click', () => {
+    const card = document.querySelector('.clicked').nextElementSibling;
+    const offset = scroll();
+
+    if (card) {
+        $('.clicked').removeClass('clicked');
+        $('.open').remove();
+        $('.overlay').remove();
+        $('body').css('overflow', 'unset');
+
+        $('.prev').css('display', 'none');
+        $('.next').css('display', 'none');
+
+        openInfo(card);
+        $('.open .more-info').css('display', 'block');
+        $('.open').css('top', offset + 100);
+        $('body').css('overflow', 'hidden');
+
+        $('.prev').css('display', 'block');
+        $('.next').css('display', 'block');
+
+        $('.prev').css('top', offset + 500);
+        $('.prev').css('left', '40%');
+
+        $('.next').css('top', offset + 500);
+        $('.next').css('right', '40%');
+
+        $(card).addClass('clicked');
+    }
+       
+})
+
+
+$prev.on('click', () => {
+    const card = document.querySelector('.clicked').previousElementSibling;
+    const offset = scroll();
+
+    if ($(card).hasClass('card')) {
+        $('.clicked').removeClass('clicked');
+        $('.open').remove();
+        $('.overlay').remove();
+        $('body').css('overflow', 'unset');
+
+        $('.prev').css('display', 'none');
+        $('.next').css('display', 'none');
+
+        openInfo(card);
+        $('.open .more-info').css('display', 'block');
+        $('.open').css('top', offset + 100);
+        $('body').css('overflow', 'hidden');
+
+        $('.prev').css('display', 'block');
+        $('.next').css('display', 'block');
+
+        $('.prev').css('top', offset + 500);
+        $('.prev').css('left', '40%');
+
+        $('.next').css('top', offset + 500);
+        $('.next').css('right', '40%');
+
+        $(card).addClass('clicked');
+    }
+       
+})
+
+
+/*================================================
+============SEARCH FUNCTIONALITY===================
+==================================================*/
+
+$('input').on('keyup', function(){
+    const value = $(this).val().toLowerCase();
+    $('.card h3').filter(function() {
+        const $name = $(this).text().toLowerCase();
+        $(this).parent().parent().toggle($name.indexOf(value) !== -1);
+    });
+});
+
+
+
+/*=================================================
+===========GETTING INFO FROM THE API===============
+==================================================*/
 
 fetch('https://randomuser.me/api/?results=12&nat=us&dob.date[0]=1')
    .then(response => response.json())
    .then(getCards)
    .then(openCard)
+   .catch(err => {
+       new Error(err);
+       $('body').append('<h2 class="err">something went wrong :(</h2>');
+       $('.err').css('width', '50%');
+       $('.err').css('margin', '0 auto');
+       $('.wrapper').css('display', 'none');
+    });
   
    
   

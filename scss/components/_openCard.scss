@@ -4,18 +4,10 @@
 
 .overlay {
     z-index: 5;
-    height: 350%;
+    height: 500%;
     width: 100%;
     top: 0;
     background: rgba($black, .5);
-
-    @include mq($brk-m) {
-        height: 200%;
-    }
-   
-    @include mq($brk-l) {
-        height: 120%;
-    }
 
 }
 

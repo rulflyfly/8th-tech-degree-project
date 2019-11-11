@@ -4,21 +4,7 @@
     box-sizing: border-box;
     font-family: $font-primary;
     color: $color-text-rimary;
-}
-
-
-h1 {
-    margin: 1em auto .5em;
-    padding: 2.5%;
-    font-size: 1.5em;
-    text-align: center;
-
-    @include mq($brk-l) {
-        text-align: left;
-        max-width: 47em;
-        margin: 0 auto;
-        padding-left: 0;
-    }
+    user-select: none;
 }
 
 p {

@@ -1,0 +1,15 @@
+.next, .prev {
+    display: none;
+    width: 2em;
+    height: 2em;
+    position: absolute;
+    z-index: 15;
+
+    & svg {
+        fill: $white;
+    }
+}
+
+.prev {
+    transform: rotate(-180deg);
+}
